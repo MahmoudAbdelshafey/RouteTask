@@ -1,6 +1,10 @@
 # route_task
 
 A new Flutter project.
+## UI
+![pic1](https://github.com/user-attachments/assets/228ce075-c8d0-4880-8a4b-561c83de2c83)
+![pic2](https://github.com/user-attachments/assets/61c29046-d5ac-47a1-96e8-9fff1d1bb09f)
+
 
 ## Getting Started
 
