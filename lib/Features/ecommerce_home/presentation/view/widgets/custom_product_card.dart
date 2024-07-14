@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:route_task/Features/ecommerce_home/data/product_model.dart';
+import 'package:route_task/Features/ecommerce_home/presentation/view_model/ecommerce_cubit.dart';
 import 'package:route_task/core/constants.dart';
 
 class CustomProductCard extends StatelessWidget {
-  const CustomProductCard({super.key});
+  const CustomProductCard({super.key, required this.product});
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +21,32 @@ class CustomProductCard extends StatelessWidget {
               child: Container(
             alignment: Alignment.topRight,
             width: double.infinity,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+            decoration:  BoxDecoration(
+                borderRadius:const BorderRadius.only(
                     topRight: Radius.circular(18),
                     topLeft: Radius.circular(18)),
                 image: DecorationImage(
-                    image: AssetImage(
-                      'assets/images/product.jpg',
-                    ),
+                    image: NetworkImage(product.imagePath),
                     fit: BoxFit.fitWidth)),
-            child:const  Padding(
-              padding:  EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 16,
-                child: Icon(
-                  Icons.favorite_border,
-                  color: AppConstants.kPrimaryColor,
-                  size: 20,
+            child:  Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: (){
+                  BlocProvider.of<EcommerceCubit>(context).addOrRemoveFaveoriteProduct(product);
+                  print(product.productSelected);
+                },
+                child: CircleAvatar(
+                  backgroundColor: product.productSelected ? Colors.red: Colors.white,
+                  radius: 16,
+                  child: product.productSelected?Icon(
+                    Icons.favorite,
+                    color: Colors.white,
+                    size: 20,
+                  ) : Icon(
+                    Icons.favorite_border,
+                    color: AppConstants.kPrimaryColor,
+                    size: 20,
+                  ),
                 ),
               ),
             ),
@@ -47,8 +59,8 @@ class CustomProductCard extends StatelessWidget {
                     flex: 3,
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                      child:const  Text(
-                        'Nike Air Jordon Nike shoes flexible for woasdfasdfasd',
+                      child:  Text(
+                        product.productTitle,
                         style: TextStyle(
                             fontSize: 14,
                             color: AppConstants.kPrimaryColor,
@@ -65,13 +77,13 @@ class CustomProductCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '100\$',
+                            '${product.productPrice}\$',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text('\$8.99',
+                          Text('${(product.productPrice + ((product.productSale/10)+ product.productPrice)).toStringAsFixed(2)}\$',
                               style: TextStyle(
                                   decoration: TextDecoration.lineThrough,
                                   color: AppConstants.kPrimaryColor
@@ -84,7 +96,7 @@ class CustomProductCard extends StatelessWidget {
                   padding:const  EdgeInsets.all(8),
                   child: Row(
                     children: [
-                     const  Text('Review (4.8)', style: TextStyle(
+                       Text('Review (${product.productRate})', style: TextStyle(
                         fontSize: 12,
                         color: AppConstants.kPrimaryColor,
                         fontWeight: FontWeight.bold

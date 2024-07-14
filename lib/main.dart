@@ -1,10 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:route_task/Features/ecommerce_home/presentation/view_model/ecommerce_cubit.dart';
 
 import 'Features/splash_view/presentation/view/splash_view.dart';
 
-void main (){
-  runApp(const RouteApp());
+void main ()async{
+  runApp(BlocProvider<EcommerceCubit>(
+    create: (context) => EcommerceCubit(EcommerceState()),
+    child: const RouteApp(),
+  ));
 }
 
 class RouteApp extends StatelessWidget {
